@@ -1,12 +1,16 @@
 package com.ming.springbootmall.model;
 
 import constant.ProductCategory;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "product")
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
 
     public Product() {
@@ -28,8 +32,10 @@ public class Product {
     private Integer stock;
     private String description;
     @Column(name = "created_date")
+    @CreatedDate
     private Date createdDate;
     @Column(name = "last_modified_date")
+    @LastModifiedDate
     private Date lastModifiedDate;
 
     public Integer getProductId() {
