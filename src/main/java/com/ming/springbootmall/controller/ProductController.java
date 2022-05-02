@@ -1,6 +1,7 @@
 package com.ming.springbootmall.controller;
 
 import com.ming.springbootmall.dao.ProductDao;
+import com.ming.springbootmall.dto.ProductQueryParms;
 import com.ming.springbootmall.model.Product;
 import com.ming.springbootmall.service.ProductService;
 import constant.ProductCategory;
@@ -29,7 +30,7 @@ public class ProductController {
 //        pr
 //    }
 
-
+    //查詢商品根據id
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer id){
         Product product1 = productDao.findById(id).orElse(null);
@@ -39,15 +40,20 @@ public class ProductController {
 
     }
 
+    //查詢商品
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search
             ){
-        List<Product> list = productService.getProducts(category, search);
+        ProductQueryParms productQueryParms = new ProductQueryParms();
+        productQueryParms.setCategory(category);
+        productQueryParms.setSearch(search);
+
+        List<Product> list = productService.getProducts(productQueryParms);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
-
+    // 查詢商品 失敗待改
     @GetMapping("/products1")
     public ResponseEntity<List<Product>> getProducts2(
             @RequestParam(value = "category",required = false) ProductCategory category
@@ -58,7 +64,7 @@ public class ProductController {
     }
 
 
-
+    // 新增商品
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody  Product product){
         Product product1 = productDao.save(product);
@@ -66,6 +72,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product1);
     }
 
+    //更新商品
     @PutMapping("/product/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody Product product){
@@ -83,7 +90,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-
+    //刪除商品
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
         productDao.deleteById(productId);

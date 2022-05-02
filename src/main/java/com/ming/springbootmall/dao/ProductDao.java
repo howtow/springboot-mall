@@ -1,5 +1,6 @@
 package com.ming.springbootmall.dao;
 
+import com.ming.springbootmall.dto.ProductQueryParms;
 import com.ming.springbootmall.model.Product;
 import constant.ProductCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,6 @@ public interface ProductDao extends JpaRepository<Product,Integer> {
     List<Product> findProductByCategory(@Param("category") ProductCategory category);
 
 
-    List<Product> getProducts(ProductCategory category,String search);
+    List<Product> getProducts(ProductQueryParms productQueryParms);
 
 }
