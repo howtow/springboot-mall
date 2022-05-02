@@ -1,5 +1,7 @@
 package com.ming.springbootmall.model;
 
+import constant.ProductCategory;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -18,7 +20,8 @@ public class Product {
     @Column(name="product_name")
     private String productName;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
     @Column(name = "image_url")
     private String imageUrl;
     private Integer price;
@@ -45,11 +48,11 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getCategory() {
+    public ProductCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
 
