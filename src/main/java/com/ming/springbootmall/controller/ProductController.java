@@ -16,6 +16,7 @@ import org.yaml.snakeyaml.events.Event;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @EnableJpaAuditing
 public class ProductController {
@@ -43,12 +44,19 @@ public class ProductController {
     //查詢商品
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
+            // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+
+            //排序 Sorting
+            @RequestParam(defaultValue = "created_date") String orderBy,
+            @RequestParam(defaultValue = "desc") String sort
             ){
         ProductQueryParms productQueryParms = new ProductQueryParms();
         productQueryParms.setCategory(category);
         productQueryParms.setSearch(search);
+        productQueryParms.setOrderBy(orderBy);
+        productQueryParms.setSort(sort);
 
         List<Product> list = productService.getProducts(productQueryParms);
         return ResponseEntity.status(HttpStatus.OK).body(list);

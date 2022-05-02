@@ -5,6 +5,24 @@ import constant.ProductCategory;
 public class ProductQueryParms {
     ProductCategory category;
     String search;
+    String orderBy;
+    String sort;
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
 
     public ProductCategory getCategory() {
         return category;
