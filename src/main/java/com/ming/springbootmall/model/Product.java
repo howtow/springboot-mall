@@ -31,7 +31,7 @@ public class Product {
     private Integer price;
     private Integer stock;
     private String description;
-    @Column(name = "created_date")
+    @Column(name = "created_date",updatable = false)
     @CreatedDate
     private Date createdDate;
     @Column(name = "last_modified_date")
