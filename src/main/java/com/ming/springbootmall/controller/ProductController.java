@@ -2,10 +2,13 @@ package com.ming.springbootmall.controller;
 
 import com.ming.springbootmall.dao.ProductDao;
 import com.ming.springbootmall.model.Product;
+import com.ming.springbootmall.service.ProductService;
+import constant.ProductCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.yaml.snakeyaml.events.Event;
 
@@ -18,21 +21,43 @@ public class ProductController {
 
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private ProductService productService;
+
+//    @GetMapping("/products")
+//    public ResponseEntity<List<Product>> getProducts(){
+//        pr
+//    }
 
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer id){
         Product product1 = productDao.findById(id).orElse(null);
-
+            if(product1!=null)
             return ResponseEntity.status(HttpStatus.OK).body(product1);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
 
-    @GetMapping("/product/getAll")
-    public List<Product> findAllProduct(){
-        List<Product> productDaoAll = productDao.findAll();
-        return productDaoAll;
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+            ){
+        List<Product> list = productService.getProducts(category, search);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+
+    @GetMapping("/products1")
+    public ResponseEntity<List<Product>> getProducts2(
+            @RequestParam(value = "category",required = false) ProductCategory category
+    ){
+
+        List<Product> list = productDao.findProductByCategory(ProductCategory.valueOf(category.name()));
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+
 
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody  Product product){
